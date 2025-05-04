@@ -1,0 +1,106 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/item_background_white"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            style="@style/textStyleMedium_14"
+            android:id="@+id/tv_red_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="silver"
+            android:textColor="@color/orange_100"
+            android:background="@drawable/custom_background_history_item"
+            android:backgroundTint="@color/orange_accent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginEnd="6dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center" />
+        <TextView
+            style="@style/textStyleMedium_14"
+            android:id="@+id/tv_colour_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hotel"
+            android:textColor="@color/red"
+            android:background="@drawable/custom_background_history_item"
+            android:backgroundTint="@color/red_accent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center" />
+    </LinearLayout>
+    <TextView
+        style="@style/textStyleSemIBold_16"
+        android:id="@+id/tvPromoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diskon Hotel Ace"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_stroke"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icons_clock" />
+
+        <TextView
+            style="@style/textStyleMedium_14"
+            android:id="@+id/tvPromoDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="07:54, 28 Agustus 23"
+            android:textColor="@color/dark_grey"
+            android:textSize="12sp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/icons_receptionist" />
+
+        <TextView
+            style="@style/textStyleMedium_14"
+            android:id="@+id/tvPromoAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Faris Pratama"
+            android:textColor="@color/dark_grey"
+            android:textSize="12sp"
+            android:layout_marginStart="4dp" />
+    </LinearLayout>
+</LinearLayout>
