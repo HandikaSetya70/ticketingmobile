@@ -1,31 +1,28 @@
-package com.dicoding.ticketingsystem.Main.Events
+// EventsFragment.kt
+package com.dicoding.ticketingsystem.ui.events
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.dicoding.ticketingsystem.R
+import androidx.fragment.app.Fragment
+import com.dicoding.ticketingsystem.databinding.FragmentEventsBinding
 
 class EventsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = EventsFragment()
-    }
-
-    private val viewModel: EventsViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // TODO: Use the ViewModel
-    }
+    private var _binding: FragmentEventsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_events, container, false)
+        _binding = FragmentEventsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

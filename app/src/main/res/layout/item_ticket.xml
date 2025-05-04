@@ -3,7 +3,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_marginBottom="20dp"
+    android:layout_marginTop="20dp"
     android:background="@drawable/item_background_white"
     android:clipToPadding="false">
 
@@ -13,12 +13,12 @@
         android:orientation="horizontal">
         <TextView
             style="@style/textStyleMedium_14"
-            android:id="@+id/tv_red_category"
+            android:id="@+id/tv_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="silver"
+            android:text="Concert"
             android:textColor="@color/orange_100"
-            android:background="@drawable/custom_background_history_item"
+            android:background="@drawable/item_background_white"
             android:backgroundTint="@color/orange_accent"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -30,12 +30,12 @@
             android:gravity="center" />
         <TextView
             style="@style/textStyleMedium_14"
-            android:id="@+id/tv_colour_status"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hotel"
+            android:text="Pending"
             android:textColor="@color/red"
-            android:background="@drawable/custom_background_history_item"
+            android:background="@drawable/item_background_white"
             android:backgroundTint="@color/red_accent"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
@@ -47,10 +47,10 @@
     </LinearLayout>
     <TextView
         style="@style/textStyleSemIBold_16"
-        android:id="@+id/tvPromoTitle"
+        android:id="@+id/tv_ticket_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Diskon Hotel Ace"
+        android:text="Billy Hill Billy Concert"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -70,11 +70,11 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:src="@drawable/icons_clock" />
+            android:src="@drawable/icon_clock" />
 
         <TextView
             style="@style/textStyleMedium_14"
-            android:id="@+id/tvPromoDate"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="07:54, 28 Agustus 23"
@@ -91,14 +91,14 @@
         <ImageView
             android:layout_width="16dp"
             android:layout_height="16dp"
-            android:src="@drawable/icons_receptionist" />
+            android:src="@drawable/icon_profile" />
 
         <TextView
             style="@style/textStyleMedium_14"
-            android:id="@+id/tvPromoAuthor"
+            android:id="@+id/tv_quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Faris Pratama"
+            android:text="3 Person"
             android:textColor="@color/dark_grey"
             android:textSize="12sp"
             android:layout_marginStart="4dp" />

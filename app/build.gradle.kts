@@ -60,6 +60,10 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
     dependencies {
         // Core Android dependencies
         implementation(libs.androidx.core.ktx)
