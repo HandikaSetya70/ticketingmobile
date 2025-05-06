@@ -66,15 +66,34 @@
             android:backgroundTint="@color/orange_100">
 
             <TextView
-                style="@style/textStyleMedium_16"
                 android:id="@+id/tv_welcome"
-                android:layout_width="0dp"
+                style="@style/textStyleMedium_16"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Welcome back! Guest 1"
+                android:text="Welcome back!"
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/iv_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/icon_profile_white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_user_name"/>
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                style="@style/textStyleSemIBold_16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guest Anna"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
