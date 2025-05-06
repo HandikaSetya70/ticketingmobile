@@ -45,7 +45,10 @@ data class Event(
     val event_id: String,
     val event_name: String,
     val event_date: String,
-    val venue: String
+    val venue: String,
+    val category: String?,
+    val event_description: String?,
+    val event_image_url: String?
 )
 
 // Class for payment data
