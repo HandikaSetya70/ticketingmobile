@@ -2,6 +2,6 @@ package com.dicoding.ticketingsystem.Main.MyTickets
 
 import androidx.lifecycle.ViewModel
 
-class TicketsViewModel : ViewModel() {
+class HistoryViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }

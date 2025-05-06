@@ -10,25 +10,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.dicoding.ticketingsystem.R
+import com.dicoding.ticketingsystem.databinding.FragmentHistoryBinding
 import com.dicoding.ticketingsystem.databinding.FragmentTicketsBinding
 
-class TicketsFragment : Fragment() {
+class HistoryFragment : Fragment() {
 
     companion object {
-        fun newInstance() = TicketsFragment()
+        fun newInstance() = HistoryFragment()
     }
 
-    private val viewModel: TicketsViewModel by viewModels()
-    private var _binding: FragmentTicketsBinding? = null
+    private val viewModel: HistoryViewModel by viewModels()
+    private var _binding: FragmentHistoryBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var pagerAdapter: TicketsPagerAdapter
+    private lateinit var pagerAdapter: HistoryPagerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTicketsBinding.inflate(inflater, container, false)
+        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,7 +42,7 @@ class TicketsFragment : Fragment() {
     }
 
     private fun setupViewPager() {
-        pagerAdapter = TicketsPagerAdapter(requireActivity())
+        pagerAdapter = HistoryPagerAdapter(requireActivity())
         binding.viewPager.adapter = pagerAdapter
 
         // Add page change callback to update button states

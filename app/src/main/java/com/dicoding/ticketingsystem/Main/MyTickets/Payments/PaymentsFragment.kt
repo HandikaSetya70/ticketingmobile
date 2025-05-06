@@ -1,4 +1,4 @@
-package com.dicoding.ticketingsystem.Main.MyTickets.Confirmed
+package com.dicoding.ticketingsystem.Main.MyTickets.Payments
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.dicoding.ticketingsystem.R
 
-class ConfirmedFragment : Fragment() {
+class PaymentsFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ConfirmedFragment()
+        fun newInstance() = PaymentsFragment()
     }
 
-    private val viewModel: ConfirmedViewModel by viewModels()
+    private val viewModel: PaymentsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,6 @@ class ConfirmedFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_confirmed, container, false)
+        return inflater.inflate(R.layout.fragment_payments, container, false)
     }
 }
