@@ -3,10 +3,10 @@ package com.dicoding.ticketingsystem
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.dicoding.ticketingsystem.Main.Events.EventsFragment
 import com.dicoding.ticketingsystem.Main.MyTickets.HistoryFragment
 import com.dicoding.ticketingsystem.Main.Profile.ProfileFragment
 import com.dicoding.ticketingsystem.databinding.ActivityMainBinding
-import com.dicoding.ticketingsystem.ui.events.EventsFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

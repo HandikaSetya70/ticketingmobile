@@ -113,5 +113,12 @@ dependencies {
 
         // Gson for JSON parsing
         implementation("com.google.code.gson:gson:2.10.1")
+
+        // Glide for image loading
+        implementation("com.github.bumptech.glide:glide:4.16.0")
+        kapt("com.github.bumptech.glide:compiler:4.16.0")
+
+        // Glide transformations (optional, for image transformations like rounded corners)
+        implementation("jp.wasabeef:glide-transformations:4.3.0")
     }
 }

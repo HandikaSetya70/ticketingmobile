@@ -1,5 +1,6 @@
 package com.dicoding.ticketingsystem.data.api
 
+import com.dicoding.ticketingsystem.DataSource.Response.EventsResponse
 import com.dicoding.ticketingsystem.DataSource.Response.UserTicketsResponse
 import com.dicoding.ticketingsystem.data.request.LoginRequest
 import com.dicoding.ticketingsystem.data.response.ApiResponse
@@ -20,4 +21,12 @@ interface ApiService {
         @Query("event_id") eventId: String? = null,
         @Query("group_by_event") groupByEvent: Boolean? = null
     ): ApiResponse<UserTicketsResponse>
+
+    @GET("events/list")
+    suspend fun getEvents(
+        @Query("upcoming") upcoming: Boolean? = null,
+        @Query("past") past: Boolean? = null,
+        @Query("sort") sort: String? = "event_date",
+        @Query("order") order: String? = "asc"
+    ): EventsResponse
 }
