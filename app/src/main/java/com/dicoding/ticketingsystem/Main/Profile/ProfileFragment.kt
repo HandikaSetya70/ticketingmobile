@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import com.dicoding.ticketingsystem.Main.Profile.ProfileDetails.ProfileDetailsActivity
 import com.dicoding.ticketingsystem.R
 import com.dicoding.ticketingsystem.StarterActivity
 import com.dicoding.ticketingsystem.data.SessionManager
@@ -40,6 +41,15 @@ class ProfileFragment : Fragment() {
         binding.btnLogout.setOnClickListener {
             logout()
         }
+
+        binding.layoutProfile.setOnClickListener {
+            profileDetails()
+        }
+    }
+
+    private fun profileDetails() {
+        val intent = Intent(requireActivity(), ProfileDetailsActivity::class.java)
+        startActivity(intent)
     }
 
     private fun logout() {

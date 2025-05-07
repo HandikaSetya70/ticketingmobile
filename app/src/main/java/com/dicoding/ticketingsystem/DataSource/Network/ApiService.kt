@@ -1,6 +1,7 @@
 package com.dicoding.ticketingsystem.data.api
 
 import com.dicoding.ticketingsystem.DataSource.Response.EventsResponse
+import com.dicoding.ticketingsystem.DataSource.Response.UserProfileResponse
 import com.dicoding.ticketingsystem.DataSource.Response.UserTicketsResponse
 import com.dicoding.ticketingsystem.data.request.LoginRequest
 import com.dicoding.ticketingsystem.data.response.ApiResponse
@@ -29,4 +30,7 @@ interface ApiService {
         @Query("sort") sort: String? = "event_date",
         @Query("order") order: String? = "asc"
     ): EventsResponse
+
+    @GET("users/get")
+    suspend fun getUserProfile(): UserProfileResponse
 }
