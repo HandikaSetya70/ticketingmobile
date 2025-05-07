@@ -21,7 +21,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@drawable/background_item">
+            android:background="@drawable/background_item"
+            android:backgroundTint="@color/orange_100">
 
             <TextView
                 style="@style/textStyleSemIBold_32"
@@ -57,13 +58,13 @@
             android:id="@+id/cl_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="12dp"
             android:padding="20dp"
             app:layout_constraintTop_toBottomOf="@id/cl_1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/background_item"
-            android:backgroundTint="@color/orange_100">
+            android:backgroundTint="@color/orange_75">
 
             <TextView
                 android:id="@+id/tv_welcome"

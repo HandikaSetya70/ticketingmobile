@@ -1,5 +1,6 @@
 package com.dicoding.ticketingsystem.Main.MyTickets.Tickets
 
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +14,9 @@ import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.ticketingsystem.DataSource.Response.TicketGroup
 import com.dicoding.ticketingsystem.DataSource.Response.UserTicketsResponse
+import com.dicoding.ticketingsystem.Main.MyTickets.TicketDetails.TicketDetailsActivity
 import com.dicoding.ticketingsystem.databinding.FragmentTicketsBinding
+import com.google.gson.Gson
 
 class TicketsFragment : Fragment() {
     private var _binding: FragmentTicketsBinding? = null
@@ -102,11 +105,19 @@ class TicketsFragment : Fragment() {
     }
 
     private fun navigateToTicketDetails(ticketGroup: TicketGroup) {
-        // Implementation for navigating to ticket details
-        // For example:
-        // val action = TicketsFragmentDirections.actionTicketsFragmentToTicketDetailsFragment(ticketGroup.parent.ticket_id)
-        // findNavController().navigate(action)
-        Toast.makeText(context, "Clicked on ticket: ${ticketGroup.parent.events?.event_name}", Toast.LENGTH_SHORT).show()
+        // Create intent to navigate to TicketDetailsActivity
+        val intent = Intent(context, TicketDetailsActivity::class.java)
+
+        // Convert TicketGroup to Parcelable or serialize it
+        // Using a simple approach with Gson for serialization
+        val gson = Gson()
+        val ticketGroupJson = gson.toJson(ticketGroup)
+
+        // Pass the data to the activity
+        intent.putExtra(TicketDetailsActivity.EXTRA_TICKET_GROUP, ticketGroupJson)
+
+        // Start the activity
+        startActivity(intent)
     }
 
     @OptIn(UnstableApi::class)

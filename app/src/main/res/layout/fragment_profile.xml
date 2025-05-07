@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:text="Customer service"
+                        android:text="Customer Service"
                         android:textColor="@color/dark_grey" />
 
                     <ImageView

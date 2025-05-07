@@ -1,5 +1,6 @@
 package com.dicoding.ticketingsystem.Main.Events
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dicoding.ticketingsystem.Main.Events.EventDetails.EventDetailsActivity
 import com.dicoding.ticketingsystem.databinding.FragmentEventsBinding
+import com.google.gson.Gson
 
 
 class EventsFragment : Fragment() {
@@ -39,9 +42,18 @@ class EventsFragment : Fragment() {
 
     private fun setupAdapter() {
         eventsAdapter = EventsAdapter { event ->
-            // Handle event click
-            Toast.makeText(requireContext(), "Clicked: ${event.event_name}", Toast.LENGTH_SHORT).show()
-            // Navigate to event details here
+            // Navigate to event details
+            val intent = Intent(requireContext(), EventDetailsActivity::class.java)
+
+            // Convert Event to JSON string
+            val gson = Gson()
+            val eventJson = gson.toJson(event)
+
+            // Pass the data to the activity
+            intent.putExtra(EventDetailsActivity.EXTRA_EVENT, eventJson)
+
+            // Start the activity
+            startActivity(intent)
         }
 
         binding.rvEvents.apply {

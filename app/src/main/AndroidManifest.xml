@@ -15,6 +15,12 @@
         android:theme="@style/Theme.TicketingSystem"
         tools:targetApi="31">
         <activity
+            android:name=".Main.Profile.ProfileDetails.ProfileDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Main.Events.EventDetails.EventDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".Main.MyTickets.TicketDetails.TicketDetailsActivity"
             android:exported="false" />
         <activity

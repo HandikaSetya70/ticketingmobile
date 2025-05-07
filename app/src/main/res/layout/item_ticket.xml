@@ -68,7 +68,8 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginEnd="4dp"
-            android:src="@drawable/icon_profile"
+            android:src="@drawable/icon_profiles_white"
+            app:tint="@color/dark_grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_quantity" />
 
