@@ -233,7 +233,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 tools:listitem="@layout/item_ticket_qrcode"
-                tools:itemCount="1"/>
+                tools:itemCount="2"/>
 
             <LinearLayout
                 android:id="@+id/btn_show"

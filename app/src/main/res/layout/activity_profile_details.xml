@@ -19,11 +19,11 @@
 
     <TextView
         android:id="@+id/tv_title"
-        style="@style/textStyleMedium_20"
+        style="@style/textStyleSemIBold_20"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="My Profile Details"
+        android:text="My Profile"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,9 @@
                     style="@style/textStyleMedium_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Foto Identifikasi"
+                    android:text="ID Picture"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <androidx.cardview.widget.CardView
@@ -85,6 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Full Name"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -103,6 +107,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Email"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -121,6 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="ID Number"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -139,6 +147,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Date of Birth"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -157,6 +167,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Verification Status"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -174,22 +186,88 @@
                     android:text="Approved"
                     android:textColor="@color/white" />
 
+                <TextView
+                    android:id="@+id/tv_wallet_status_title"
+                    style="@style/textStyleMedium_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Wallet List"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/tv_wallet_status"
+                    style="@style/textStyleSemIBold_16"
+                    android:textSize="12sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/chip_category_green"
+                    android:backgroundTint="@color/red"
+                    android:padding="6dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Not Linked"
+                    android:textColor="@color/white" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_wallets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:listitem="@layout/item_wallet"
+                    tools:itemCount="2"/>
+
             </LinearLayout>
-            <Button
-                android:id="@+id/btn_edit"
-                style="@style/textStyleButton"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/custom_button_orange"
-                android:elevation="0dp"
-                android:padding="10dp"
-                android:visibility="gone"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:layout_marginBottom="32dp"
-                android:text="Edit Data"
-                android:textAllCaps="false" />
+                android:layout_marginBottom="60dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/btn_edit"
+                    style="@style/textStyleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_button_orange"
+                    android:elevation="0dp"
+                    android:padding="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:text="Edit Data"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/btn_link"
+                    style="@style/textStyleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_button_orange"
+                    android:backgroundTint="@color/blue"
+                    android:elevation="0dp"
+                    android:padding="10dp"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:text="Link Wallet"
+                    android:textAllCaps="false"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </LinearLayout>
 
@@ -210,7 +288,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
