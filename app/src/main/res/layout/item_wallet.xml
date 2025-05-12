@@ -3,114 +3,144 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="12dp"
-    android:layout_marginTop="12dp"
-    android:background="@drawable/background_thick_outline"
+
     android:clipToPadding="false">
 
-    <TextView
-        android:id="@+id/tv_wallet_title"
-        style="@style/textStyleSemIBold_14"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="3dp"
-        android:text="Wallet #1"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/v_line"
-        app:layout_constraintStart_toEndOf="@id/iv_icon_wallet"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_linked"
-        style="@style/textStyleSemIBold_14"
-        android:textSize="10sp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_wallet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="9dp"
-        android:background="@drawable/chip_category_green"
-        android:backgroundTint="@color/green"
-        android:padding="4dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="Linked"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/v_line"
-        app:layout_constraintStart_toEndOf="@id/tv_wallet_title"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/background_thick_outline"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/iv_icon_wallet"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/icon_wallet"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black" />
+        <TextView
+            android:id="@+id/tv_wallet_title"
+            style="@style/textStyleSemIBold_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="3dp"
+            android:text="Wallet #1"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/v_line"
+            app:layout_constraintStart_toEndOf="@id/iv_icon_wallet"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_linked"
+            style="@style/textStyleSemIBold_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/chip_category_green"
+            android:backgroundTint="@color/blue"
+            android:padding="4dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Linked"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toTopOf="@+id/v_line"
+            app:layout_constraintStart_toEndOf="@id/tv_wallet_title"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_icon_wallet"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/icon_wallet"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tv_wallet_address"
+            style="@style/textStyleMedium_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/chip_category_green"
+            android:backgroundTint="@color/black"
+            android:padding="4dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Address"
+            android:textColor="@color/white"
+            android:textSize="8dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+        <TextView
+            android:id="@+id/tv_wallet_address_value"
+            style="@style/textStyleMedium_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="0xABC123...DEF4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_wallet_address"
+            app:layout_constraintTop_toBottomOf="@id/v_line" />
+
+        <ImageView
+            android:id="@+id/iv_copy"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/icon_copy_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_wallet_address_value"
+            app:layout_constraintTop_toBottomOf="@id/v_line"
+            app:tint="@color/black" />
+
+        <View
+            android:id="@+id/v_line"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/iv_qr"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_icon_wallet" />
+
+        <ImageView
+            android:id="@+id/iv_qr"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/qr_example"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_copy"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/tv_wallet_address"
-        style="@style/textStyleMedium_12"
-        android:textSize="8dp"
-        android:layout_width="0dp"
+        android:id="@+id/btn_delete"
+        style="@style/textStyleSemIBold_14"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:text="Address"
-        android:textStyle="bold"
         android:background="@drawable/chip_category_green"
         android:backgroundTint="@color/black"
         android:padding="4dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:text="Delete"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_line" />
-
-    <TextView
-        android:id="@+id/tv_wallet_address_value"
-        style="@style/textStyleMedium_12"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:text="0xABC123...DEF4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_wallet_address"
-        app:layout_constraintTop_toBottomOf="@id/v_line" />
-
-    <ImageView
-        android:id="@+id/iv_copy"
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_marginStart="10dp"
-        android:src="@drawable/icon_copy_white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_wallet_address_value"
-        app:layout_constraintTop_toBottomOf="@id/v_line"
-        app:tint="@color/black" />
-
-    <View
-        android:id="@+id/v_line"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="18dp"
-        android:background="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/iv_qr"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_wallet" />
-
-    <ImageView
-        android:id="@+id/iv_qr"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:src="@drawable/qr_example"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
