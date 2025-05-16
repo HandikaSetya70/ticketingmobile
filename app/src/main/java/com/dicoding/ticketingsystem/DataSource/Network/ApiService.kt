@@ -1,8 +1,11 @@
 package com.dicoding.ticketingsystem.data.api
 
+import com.dicoding.ticketingsystem.DataSource.Response.ConnectWalletRequest
 import com.dicoding.ticketingsystem.DataSource.Response.EventsResponse
 import com.dicoding.ticketingsystem.DataSource.Response.UserProfileResponse
 import com.dicoding.ticketingsystem.DataSource.Response.UserTicketsResponse
+import com.dicoding.ticketingsystem.DataSource.Response.WalletResponse
+import com.dicoding.ticketingsystem.DataSource.Response.WalletsResponse
 import com.dicoding.ticketingsystem.data.request.LoginRequest
 import com.dicoding.ticketingsystem.data.response.ApiResponse
 import com.dicoding.ticketingsystem.data.response.LoginResponse
@@ -33,4 +36,16 @@ interface ApiService {
 
     @GET("users/get")
     suspend fun getUserProfile(): UserProfileResponse
+
+    @POST("wallet/connect")
+    suspend fun connectWallet(
+        @Body request: ConnectWalletRequest
+    ): ApiResponse<WalletResponse>
+
+    @GET("wallet/get")
+    suspend fun getWallets(
+        @Query("wallet_id") walletId: String? = null,
+        @Query("detailed") detailed: Boolean? = true,
+        @Query("include_nft_count") includeNftCount: Boolean? = true
+    ): ApiResponse<WalletsResponse>
 }

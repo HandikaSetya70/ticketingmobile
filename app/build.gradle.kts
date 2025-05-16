@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dicoding.ticketingsystem"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -46,11 +46,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
@@ -120,5 +120,28 @@ dependencies {
 
         // Glide transformations (optional, for image transformations like rounded corners)
         implementation("jp.wasabeef:glide-transformations:4.3.0")
+
+        // QR code generation and scanning
+        implementation("com.github.kenglxn.QRGen:android:3.0.1")
+        implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+
+        // Web3j for Ethereum interactions
+        implementation("org.web3j:core:5.0.0")
+
+        // For QR code scanning (using ZXing)
+        implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+        implementation("com.google.zxing:core:3.5.2")
+
+        // Other required dependencies
+        implementation("com.squareup.okhttp3:okhttp:4.10.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+        // QR code generation
+        implementation("com.github.kenglxn.QRGen:android:3.0.1")
+
+        // QR code generation for MetaMask connection
+        implementation("com.google.zxing:core:3.5.2")
+
     }
 }
