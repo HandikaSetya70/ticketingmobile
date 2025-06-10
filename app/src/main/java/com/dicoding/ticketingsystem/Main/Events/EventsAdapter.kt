@@ -35,32 +35,116 @@ class EventsAdapter(
 
         fun bind(event: Event) {
             binding.apply {
-                // Set title and description
-                tvTitle.text = event.event_name
-                tvDescription.text = event.event_description ?: "No description available"
+                // 🔧 FIXED: Use enhanced API field names with fallbacks
+                tvTitle.text = getEventName(event)
+                tvDescription.text = getEventDescription(event)
 
-                // Format category (first letter uppercase, rest lowercase)
-                val category = event.category?.let {
-                    if (it.isNotEmpty()) {
-                        it.substring(0, 1).uppercase() + it.substring(1).lowercase()
-                    } else {
-                        "General"
-                    }
-                } ?: "General"
+                // 🔧 FIXED: Format category with enhanced API
+                val category = getEventCategory(event)
                 tvCategory.text = category
 
-                // Format date
-                val dateText = formatEventDate(event.event_date)
+                // 🆕 NEW: Update capacity with availability info
+                updateCapacityDisplay(event)
+
+                // 🔧 FIXED: Format date with enhanced API
+                val dateText = formatEventDate(getEventDate(event))
                 tvDate.text = dateText
 
-                // Load image with Glide
-                if (!event.event_image_url.isNullOrEmpty()) {
+                // 🔧 FIXED: Load image with enhanced API
+                val imageUrl = getEventImageUrl(event)
+                if (!imageUrl.isNullOrEmpty()) {
                     Glide.with(itemView.context)
-                        .load(event.event_image_url)
+                        .load(imageUrl)
                         .placeholder(R.drawable.image_empty)
                         .error(R.drawable.image_empty)
                         .into(ivImage)
+                } else {
+                    // Set placeholder if no image
+                    ivImage.setImageResource(R.drawable.image_empty)
                 }
+            }
+        }
+
+        // 🆕 NEW: Update capacity display with availability and pricing
+        private fun updateCapacityDisplay(event: Event) {
+            binding.apply {
+                when {
+                    // Show availability info if we have ticket data
+                    event.total > 0 -> {
+                        val availabilityText = "${event.available}/${event.total}"
+                        tvCapacity.text = availabilityText
+
+                        // Update background color based on availability
+                        when {
+                            event.is_sold_out -> {
+                                // Sold out - red background
+                                tvCapacity.setBackgroundResource(R.drawable.chip_category_orange) // You can create a red variant
+                                tvCapacity.text = "SOLD OUT"
+                            }
+                            event.available <= (event.total * 0.1) -> {
+                                // Limited availability (≤10%) - orange background
+                                tvCapacity.setBackgroundResource(R.drawable.chip_category_orange)
+                                tvCapacity.text = "ONLY $availabilityText LEFT"
+                            }
+                            else -> {
+                                // Good availability - blue background (existing)
+                                tvCapacity.setBackgroundResource(R.drawable.chip_category_blue)
+                                tvCapacity.text = availabilityText
+                            }
+                        }
+                    }
+                    // Fallback for events without ticket data
+                    else -> {
+                        tvCapacity.text = "TBA"
+                        tvCapacity.setBackgroundResource(R.drawable.chip_category_blue)
+                    }
+                }
+            }
+        }
+
+        // 🔧 Helper functions to handle both old and new field names
+        private fun getEventName(event: Event): String {
+            return when {
+                !event.name.isNullOrEmpty() -> event.name
+                !event.event_name.isNullOrEmpty() -> event.event_name!!
+                else -> "Untitled Event"
+            }
+        }
+
+        private fun getEventDescription(event: Event): String {
+            return when {
+                !event.description.isNullOrEmpty() -> event.description!!
+                !event.event_description.isNullOrEmpty() -> event.event_description!!
+                else -> "No description available"
+            }
+        }
+
+        private fun getEventCategory(event: Event): String {
+            val categoryText = when {
+                !event.category.isNullOrEmpty() -> event.category!!
+                else -> "General"
+            }
+
+            return if (categoryText.isNotEmpty()) {
+                categoryText.substring(0, 1).uppercase() + categoryText.substring(1).lowercase()
+            } else {
+                "General"
+            }
+        }
+
+        private fun getEventDate(event: Event): String {
+            return when {
+                !event.date.isNullOrEmpty() -> event.date
+                !event.event_date.isNullOrEmpty() -> event.event_date!!
+                else -> ""
+            }
+        }
+
+        private fun getEventImageUrl(event: Event): String? {
+            return when {
+                !event.image.isNullOrEmpty() -> event.image
+                !event.event_image_url.isNullOrEmpty() -> event.event_image_url
+                else -> null
             }
         }
 
@@ -68,13 +152,11 @@ class EventsAdapter(
             if (dateString.isNullOrEmpty()) return "Event date: Unknown"
 
             return try {
-                // Remove timezone part if exists
-                val dateTimePart = if (dateString.contains("+")) {
-                    dateString.substring(0, dateString.indexOf("+"))
-                } else if (dateString.contains("Z")) {
-                    dateString.substring(0, dateString.indexOf("Z"))
-                } else {
-                    dateString
+                // Handle timezone-aware date string (enhanced API format)
+                val dateTimePart = when {
+                    dateString.contains("+") -> dateString.substring(0, dateString.indexOf("+"))
+                    dateString.contains("Z") -> dateString.substring(0, dateString.indexOf("Z"))
+                    else -> dateString
                 }
 
                 // Parse the date
@@ -82,29 +164,33 @@ class EventsAdapter(
                 sdf.timeZone = TimeZone.getTimeZone("UTC")
                 val date = sdf.parse(dateTimePart)
 
-                // Format time
-                val timeFormat = SimpleDateFormat("h a", Locale.US)
-                timeFormat.timeZone = TimeZone.getDefault() // Local time
-                val time = timeFormat.format(date)
+                if (date != null) {
+                    // Format time
+                    val timeFormat = SimpleDateFormat("h a", Locale.US)
+                    timeFormat.timeZone = TimeZone.getDefault() // Local time
+                    val time = timeFormat.format(date)
 
-                // Format day with ordinal suffix
-                val dayFormat = SimpleDateFormat("d", Locale.US)
-                val day = dayFormat.format(date).toInt()
-                val dayWithSuffix = when {
-                    day % 10 == 1 && day != 11 -> "${day}st"
-                    day % 10 == 2 && day != 12 -> "${day}nd"
-                    day % 10 == 3 && day != 13 -> "${day}rd"
-                    else -> "${day}th"
+                    // Format day with ordinal suffix
+                    val dayFormat = SimpleDateFormat("d", Locale.US)
+                    val day = dayFormat.format(date).toInt()
+                    val dayWithSuffix = when {
+                        day % 10 == 1 && day != 11 -> "${day}st"
+                        day % 10 == 2 && day != 12 -> "${day}nd"
+                        day % 10 == 3 && day != 13 -> "${day}rd"
+                        else -> "${day}th"
+                    }
+
+                    // Get month and year
+                    val monthFormat = SimpleDateFormat("MMMM", Locale.US)
+                    val month = monthFormat.format(date)
+
+                    val yearFormat = SimpleDateFormat("yyyy", Locale.US)
+                    val year = yearFormat.format(date)
+
+                    "Event date: $time Local Time, $dayWithSuffix of $month $year"
+                } else {
+                    "Event date: Unknown"
                 }
-
-                // Get month and year
-                val monthFormat = SimpleDateFormat("MMMM", Locale.US)
-                val month = monthFormat.format(date)
-
-                val yearFormat = SimpleDateFormat("yyyy", Locale.US)
-                val year = yearFormat.format(date)
-
-                "Event date: $time Local Time, $dayWithSuffix of $month $year"
             } catch (e: Exception) {
                 "Event date: Unknown"
             }
@@ -114,7 +200,8 @@ class EventsAdapter(
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Event>() {
             override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
-                return oldItem.event_id == newItem.event_id
+                // 🔧 FIXED: Use both id and event_id for comparison
+                return (oldItem.id == newItem.id) || (oldItem.event_id == newItem.event_id)
             }
 
             override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {

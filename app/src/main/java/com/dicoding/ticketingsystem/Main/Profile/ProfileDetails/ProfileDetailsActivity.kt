@@ -1,22 +1,17 @@
 package com.dicoding.ticketingsystem.Main.Profile.ProfileDetails
 
-import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.dicoding.ticketingsystem.R
 import com.dicoding.ticketingsystem.data.SessionManager
 import com.dicoding.ticketingsystem.databinding.ActivityProfileDetailsBinding
-import com.dicoding.ticketingsystem.databinding.DialogWalletConnectBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.CoroutineScope
@@ -26,14 +21,12 @@ import kotlinx.coroutines.launch
 import android.graphics.Bitmap
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.dicoding.ticketingsystem.DataSource.Response.WalletDetailResponse
 
 class ProfileDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProfileDetailsBinding
     private lateinit var viewModel: ProfileDetailsViewModel
     private lateinit var sessionManager: SessionManager
-    private lateinit var walletConnectDialog: Dialog
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,9 +46,6 @@ class ProfileDetailsActivity : AppCompatActivity() {
         // Set click listeners
         setClickListeners()
 
-        // Set up RecyclerView
-        binding.rvWallets.layoutManager = LinearLayoutManager(this)
-
         // Check if user is logged in
         checkLoginStatus()
 
@@ -74,7 +64,10 @@ class ProfileDetailsActivity : AppCompatActivity() {
         }
 
         binding.btnLink.setOnClickListener {
-            showWalletConnectDialog()
+            // Open the specified URL instead of showing the wallet connect dialog
+            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW)
+            intent.data = android.net.Uri.parse("http://setya.fwh.is")
+            startActivity(intent)
         }
     }
 
@@ -134,59 +127,6 @@ class ProfileDetailsActivity : AppCompatActivity() {
             binding.tvEmail.text = email
         }
 
-        // Observe wallet list
-        viewModel.wallets.observe(this) { wallets ->
-            updateWalletStatus(wallets)
-
-            // Set up RecyclerView adapter
-            binding.rvWallets.adapter = WalletAdapter(wallets) { wallet ->
-                // Handle delete button click
-                showDeleteWalletConfirmation(wallet)
-            }
-        }
-
-        // Observe wallet connection result
-        viewModel.walletConnected.observe(this) { wallet ->
-            if (wallet != null) {
-                // Close dialog if it's showing
-                if (::walletConnectDialog.isInitialized && walletConnectDialog.isShowing) {
-                    walletConnectDialog.dismiss()
-                }
-
-                Toast.makeText(this, "Wallet connected successfully", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun updateWalletStatus(wallets: List<WalletDetailResponse>) {
-        if (wallets.isEmpty()) {
-            binding.tvWalletStatus.text = "Not Linked"
-            binding.tvWalletStatus.backgroundTintList = resources.getColorStateList(R.color.red, null)
-            binding.rvWallets.visibility = View.GONE
-        } else {
-            binding.tvWalletStatus.text = "Linked"
-            binding.tvWalletStatus.backgroundTintList = resources.getColorStateList(R.color.green, null)
-            binding.rvWallets.visibility = View.VISIBLE
-        }
-    }
-
-    private fun showWalletConnectDialog() {
-        val dialogBinding = DialogWalletConnectBinding.inflate(layoutInflater)
-        walletConnectDialog = Dialog(this)
-        walletConnectDialog.setContentView(dialogBinding.root)
-        walletConnectDialog.window?.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-
-        walletConnectDialog.show()
-
-        dialogBinding.qrCardview.visibility = View.GONE
-        dialogBinding.progressBar.visibility = View.VISIBLE
-        dialogBinding.tvInstructions.text = "Initializing connection..."
-
-        //Wallet Connect implementation here
     }
 
     private fun generateQrCode(content: String): Bitmap {
@@ -199,26 +139,6 @@ class ProfileDetailsActivity : AppCompatActivity() {
             }
         }
         return bmp
-    }
-
-    private fun showDeleteWalletConfirmation(wallet: WalletDetailResponse) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Disconnect Wallet")
-        builder.setMessage("Are you sure you want to disconnect this wallet?")
-
-        builder.setPositiveButton("Disconnect") { dialog, _ ->
-            // TODO: Implement wallet disconnection API call
-            // For now, just refresh the wallet list
-            viewModel.getUserWallets(this)
-            dialog.dismiss()
-        }
-
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        val dialog = builder.create()
-        dialog.show()
     }
 
     override fun onDestroy() {

@@ -5,10 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dicoding.ticketingsystem.DataSource.Response.ConnectWalletRequest
 import com.dicoding.ticketingsystem.DataSource.Response.UserProfileData
-import com.dicoding.ticketingsystem.DataSource.Response.WalletDetailResponse
-import com.dicoding.ticketingsystem.DataSource.Response.WalletResponse
 import com.dicoding.ticketingsystem.data.SessionManager
 import com.dicoding.ticketingsystem.data.api.ApiConfig
 import kotlinx.coroutines.flow.first
@@ -30,13 +27,6 @@ class ProfileDetailsViewModel : ViewModel() {
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
 
-    // Wallet-related LiveData
-    private val _wallets = MutableLiveData<List<WalletDetailResponse>>()
-    val wallets: LiveData<List<WalletDetailResponse>> = _wallets
-
-    private val _walletConnected = MutableLiveData<WalletResponse?>()
-    val walletConnected: LiveData<WalletResponse?> = _walletConnected
-
     fun getUserProfile(context: Context) {
         _isLoading.value = true
         viewModelScope.launch {
@@ -51,58 +41,11 @@ class ProfileDetailsViewModel : ViewModel() {
                     val sessionManager = SessionManager(context)
                     _email.value = sessionManager.email.first() ?: "Email not available"
 
-                    // Get user wallets after profile is loaded
-                    getUserWallets(context)
                 } else {
                     _error.value = response.message
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "An error occurred"
-            } finally {
-                _isLoading.value = false
-            }
-        }
-    }
-
-    // Get user wallets
-    fun getUserWallets(context: Context) {
-        viewModelScope.launch {
-            try {
-                val apiService = ApiConfig.getAuthenticatedApiService(context)
-                val response = apiService.getWallets(detailed = true, includeNftCount = true)
-
-                if (response.status == "success") {
-                    _wallets.value = response.data.wallets
-                } else {
-                    // If error occurs, set empty list
-                    _wallets.value = emptyList()
-                    _error.value = response.message
-                }
-            } catch (e: Exception) {
-                _wallets.value = emptyList()
-                _error.value = "Failed to load wallets: ${e.message}"
-            }
-        }
-    }
-
-    // Connect wallet
-    fun connectWallet(context: Context, walletAddress: String, signature: String, message: String? = null) {
-        _isLoading.value = true
-        viewModelScope.launch {
-            try {
-                val apiService = ApiConfig.getAuthenticatedApiService(context)
-                val request = ConnectWalletRequest(walletAddress, signature, message)
-                val response = apiService.connectWallet(request)
-
-                if (response.status == "success") {
-                    _walletConnected.value = response.data
-                    // Refresh wallet list
-                    getUserWallets(context)
-                } else {
-                    _error.value = response.message
-                }
-            } catch (e: Exception) {
-                _error.value = "Failed to connect wallet: ${e.message}"
             } finally {
                 _isLoading.value = false
             }
