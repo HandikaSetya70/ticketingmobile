@@ -77,23 +77,19 @@ data class PriceRange(
 data class UserTicketsResponse(
     val total_tickets: Int,
     val ticket_groups: List<TicketGroup>,
-    val standalone_tickets: List<Ticket>,
+    val standalone_tickets: List<TicketData>,
     val summary: TicketSummary,
-
-    // 🆕 NEW FIELDS FOR MOBILE OPTIMIZATION
-    val last_sync: String? = null,
-    val next_sync_recommended: String? = null,
-    val filters_applied: TicketFiltersApplied? = null
+    val user_info: UserInfo,
+    val last_sync: String,
+    val next_sync_recommended: String,
+    val filters_applied: TicketFiltersApplied
 )
 
-// Enhanced TicketGroup with summary
 data class TicketGroup(
-    val parent: Ticket,
-    val children: List<Ticket>,
+    val parent: TicketData,
+    val children: List<TicketData>,
     val total_in_group: Int,
-
-    // 🆕 NEW GROUP SUMMARY
-    val group_summary: GroupSummary? = null
+    val group_summary: GroupSummary
 )
 
 data class GroupSummary(
@@ -102,118 +98,96 @@ data class GroupSummary(
     val event_name: String
 )
 
-// Enhanced Ticket class with mobile-optimized fields
-data class Ticket(
+data class TicketData(
     val ticket_id: String,
-    val user_id: String,
-    val event_id: String?,
-    val purchase_date: String,
-    val ticket_status: String,
-    val blockchain_ticket_id: String,
-    val qr_code_hash: String,
-    val payment_id: String,
-    val is_parent_ticket: Boolean,
-    val parent_ticket_id: String?,
-    val ticket_number: Int,
-    val total_tickets_in_group: Int,
-
-    // Enhanced nested objects
-    val events: Event? = null,          // Keep as Event (now enhanced)
-    val payments: Payment? = null,
-
-    // 🆕 NEW MOBILE-OPTIMIZED FIELDS
-    val event: EventInfo? = null,       // Simplified event info for mobile
-    val ticket_info: TicketInfo? = null,
-    val purchase_info: PurchaseInfo? = null,
-    val qr_code: String? = null,        // Base64 embedded QR code
-    val qr_data: String? = null,        // QR data for scanning
-    val status: String? = null,         // Alias for ticket_status
-    val validity: TicketValidity? = null,
-    val actions: TicketActions? = null
+    val event: EventInfo,
+    val ticket_info: TicketInfo,
+    val purchase_info: PurchaseInfo,
+    val qr_code: String?,
+    val qr_data: String,
+    val status: String,
+    val validity: TicketValidity,
+    val actions: TicketActions,
+    val user_metadata: UserMetadata
 )
 
-// Mobile-optimized event info
 data class EventInfo(
     val id: String,
     val name: String,
     val date: String,
     val venue: String,
-    val description: String? = null,
-    val category: String? = null,
-    val price: Double = 0.0,
-    val image: String? = null,
-    val image_thumb: String? = null     // Mobile-optimized thumbnail
+    val description: String?,
+    val category: String?,
+    val price: Double,
+    val image: String?,
+    val image_thumb: String?
 )
 
-// Ticket-specific information
 data class TicketInfo(
     val number: Int,
     val total_in_group: Int,
     val is_parent: Boolean,
-    val parent_id: String? = null,
-    val blockchain_id: String? = null,
-    val nft_token_id: String? = null
+    val parent_id: String?,
+    val blockchain_id: String?,
+    val nft_token_id: Long?
 )
 
-// Purchase information
 data class PurchaseInfo(
-    val payment_id: String,
+    val payment_id: String?,
     val amount_paid: Double,
     val purchase_date: String,
-    val payment_status: String
+    val payment_status: String?
 )
 
-// Ticket validity information
 data class TicketValidity(
     val is_valid: Boolean,
     val is_upcoming: Boolean,
-    val days_till_event: Int? = null,
+    val days_till_event: Int?,
     val can_be_used: Boolean,
     val last_checked: String,
-    val blockchain_verified: Boolean = false
+    val blockchain_verified: Boolean
 )
 
-// Available actions for ticket
 data class TicketActions(
-    val can_transfer: Boolean = false,
-    val can_refund: Boolean = false,
-    val can_download: Boolean = true,
-    val can_share: Boolean = true
+    val can_transfer: Boolean,
+    val can_refund: Boolean,
+    val can_download: Boolean,
+    val can_share: Boolean
 )
 
-// Enhanced Payment class
-data class Payment(
-    val payment_id: String,
-    val amount: String,
-    val payment_status: String,
-
-    // 🆕 NEW PAYMENT FIELDS
-    val created_at: String? = null,
-    val paypal_order_id: String? = null,
-    val paypal_transaction_id: String? = null,
-    val payment_method: String? = null
+data class UserMetadata(
+    val auth_user_id: String,
+    val internal_user_id: String,
+    val user_email: String,
+    val user_name: String,
+    val verification_status: String
 )
 
-// Enhanced TicketSummary
 data class TicketSummary(
     val total: Int,
     val valid: Int,
     val revoked: Int,
-    val events_count: Int,
-
-    // 🆕 NEW SUMMARY FIELDS
-    val used: Int = 0,
-    val upcoming_events: Int = 0,
-    val past_events: Int = 0,
-    val total_spent: Double = 0.0
+    val used: Int,
+    val upcoming_events: Int,
+    val past_events: Int,
+    val total_spent: Double,
+    val events_count: Int
 )
 
-// Filters applied to ticket request
+data class UserInfo(
+    val auth_id: String,
+    val internal_id: String,
+    val email: String,
+    val name: String,
+    val verification_status: String,
+    val auth_provider: String
+)
+
 data class TicketFiltersApplied(
-    val status: String? = null,
-    val event_id: String? = null,
-    val upcoming_only: Boolean = false,
-    val include_qr: Boolean = false
+    val status: String?,
+    val event_id: String?,
+    val upcoming_only: Boolean,
+    val include_qr: Boolean
 )
 
 // ===== NEW PURCHASE FLOW RESPONSES =====
@@ -302,6 +276,34 @@ data class PushNotificationData(
     val title: String,
     val body: String,
     val data: Map<String, String>? = null
+)
+
+// Legacy Ticket class for backward compatibility
+data class Ticket(
+    val ticket_id: String,
+    val user_id: String,
+    val event_id: String?,
+    val purchase_date: String,
+    val ticket_status: String,
+    val blockchain_ticket_id: String,
+    val qr_code_hash: String,
+    val payment_id: String,
+    val is_parent_ticket: Boolean,
+    val parent_ticket_id: String?,
+    val ticket_number: Int,
+    val total_tickets_in_group: Int,
+    val events: Event? = null,
+    val payments: Payment? = null
+)
+
+data class Payment(
+    val payment_id: String,
+    val amount: String,
+    val payment_status: String,
+    val created_at: String? = null,
+    val paypal_order_id: String? = null,
+    val paypal_transaction_id: String? = null,
+    val payment_method: String? = null
 )
 
 // ===== REQUEST MODELS =====

@@ -36,10 +36,10 @@ class TicketDetailsActivity : AppCompatActivity() {
             insets
         }
 
-        // Get ticket group data from intent
+        // Get ticket group data from intent (using JSON deserialization)
         val ticketGroupJson = intent.getStringExtra(EXTRA_TICKET_GROUP)
         if (ticketGroupJson != null) {
-            val gson = Gson()
+            val gson = com.google.gson.Gson()
             ticketGroup = gson.fromJson(ticketGroupJson, TicketGroup::class.java)
 
             // Set up the UI with the data
@@ -51,44 +51,51 @@ class TicketDetailsActivity : AppCompatActivity() {
             // Set up the show/hide button
             setupShowHideButton()
         } else {
-            // Handle error case
+            // Handle error case - no ticket data
             finish()
+            return
         }
     }
 
     private fun setupUI() {
         val parentTicket = ticketGroup.parent
-        val event = parentTicket.events
-        val payment = parentTicket.payments
+        val event = parentTicket.event  // Updated: now using 'event' instead of 'events'
+        val purchase = parentTicket.purchase_info  // Updated: now using 'purchase_info'
 
         // Set quantity
         binding.tvQuantity.text = "${ticketGroup.total_in_group} Person"
 
         // Set event name
-        binding.tvEventName.text = event?.event_name ?: "Unknown Event"
+        binding.tvEventName.text = event.name  // Updated: now using 'name' instead of 'event_name'
 
         // Format and set the date
-        if (event?.event_date != null) {
-            try {
-                // Parse the date
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-                dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        try {
+            // Parse the date - handling ISO 8601 format
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+            dateFormat.timeZone = TimeZone.getTimeZone("UTC")
 
-                // Extract date part
-                val datePart = event.event_date.split("T")[0] + "T" + event.event_date.split("T")[1].split("+")[0]
-                val date = dateFormat.parse(datePart)
+            // Clean the date string (remove timezone info)
+            val cleanDateString = if (event.date.contains("+") || event.date.contains("Z")) {
+                event.date.split("+")[0].split("Z")[0]
+            } else {
+                event.date
+            }
 
-                // Format time
+            val date = dateFormat.parse(cleanDateString)
+
+            if (date != null) {
+                // Format time (12-hour format)
                 val timeFormat = SimpleDateFormat("h a", Locale.US)
                 val time = timeFormat.format(date)
 
                 // Format day with suffix
                 val dayFormat = SimpleDateFormat("d", Locale.US)
-                val day = dayFormat.format(date)
+                val day = dayFormat.format(date).toInt()
                 val dayWithSuffix = when {
-                    day.endsWith("1") && day != "11" -> "${day}st"
-                    day.endsWith("2") && day != "12" -> "${day}nd"
-                    day.endsWith("3") && day != "13" -> "${day}rd"
+                    day in 11..13 -> "${day}th" // Special case for 11th, 12th, 13th
+                    day % 10 == 1 -> "${day}st"
+                    day % 10 == 2 -> "${day}nd"
+                    day % 10 == 3 -> "${day}rd"
                     else -> "${day}th"
                 }
 
@@ -100,34 +107,46 @@ class TicketDetailsActivity : AppCompatActivity() {
                 val year = yearFormat.format(date)
 
                 binding.tvEventDate.text = "$time, $dayWithSuffix of $month $year"
-            } catch (e: Exception) {
+            } else {
                 binding.tvEventDate.text = "Unknown Date"
             }
-        } else {
+        } catch (e: Exception) {
             binding.tvEventDate.text = "Unknown Date"
         }
 
         // Set venue
-        binding.tvEventVenue.text = event?.venue ?: "Unknown Venue"
+        binding.tvEventVenue.text = event.venue
 
         // Set blockchain ticket ID
-        binding.tvBlockchainTicketId.text = "NFT Ticket ID: ${parentTicket.blockchain_ticket_id}"
+        val blockchainId = parentTicket.ticket_info.blockchain_id ?: "N/A"
+        binding.tvBlockchainTicketId.text = "NFT Ticket ID: $blockchainId"
 
-        // Set payment amount
-        binding.tvPaymentAmount.text = "Amount: $${payment?.amount ?: "0"}"
+        // Set payment amount - format as currency
+        val amount = purchase.amount_paid
+        binding.tvPaymentAmount.text = "Amount: $${String.format("%.2f", amount)}"
 
         // Set payment status with conditional formatting
-        val paymentStatus = payment?.payment_status ?: "pending"
-        val formattedStatus = paymentStatus.capitalize(Locale.getDefault())
+        val paymentStatus = purchase.payment_status ?: "pending"
+        val formattedStatus = paymentStatus.replaceFirstChar {
+            if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+        }
 
         binding.tvStatus.text = formattedStatus
 
-        if (paymentStatus.equals("confirmed", ignoreCase = true)) {
-            binding.tvStatus.backgroundTintList =
-                ContextCompat.getColorStateList(this, R.color.green)
-        } else {
-            binding.tvStatus.backgroundTintList =
-                ContextCompat.getColorStateList(this, R.color.red)
+        // Update status color based on payment status
+        when (paymentStatus.lowercase()) {
+            "confirmed" -> {
+                binding.tvStatus.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.green)
+            }
+            "pending" -> {
+                binding.tvStatus.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.orange)
+            }
+            else -> {
+                binding.tvStatus.backgroundTintList =
+                    ContextCompat.getColorStateList(this, R.color.red)
+            }
         }
     }
 

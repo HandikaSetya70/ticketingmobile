@@ -9,60 +9,93 @@
     android:background="@drawable/background_thick_outline"
     android:clipToPadding="false">
 
-    <TextView
-        android:id="@+id/tv_ticket_title"
-        style="@style/textStyleSemIBold_16"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="18dp"
-        android:text="Ticket #1"
-        android:textColor="@color/black"
-        android:layout_marginTop="3dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/iv_qr"
-        app:layout_constraintStart_toEndOf="@id/iv_icon_coupon"
-        app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/iv_icon_coupon"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="2dp"
-        android:src="@drawable/icon_ticket_black"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <TextView
-        android:id="@+id/tv_ticket_id"
-        style="@style/textStyleMedium_12"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="18dp"
-        android:text="Ticket ID: dfbc84a6-d6cf-4b83-aab1-8fcbd9807011"
-        android:textColor="@color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/iv_qr"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_coupon" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_qr">
+        <TextView
+            android:id="@+id/tv_ticket_title"
+            style="@style/textStyleSemIBold_16"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="18dp"
+            android:text="Ticket #1"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginTop="3dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_icon_coupon"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_icon_coupon"
+            android:layout_width="30dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/icon_ticket_black"
+            android:layout_marginLeft="12dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/black"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_qr"
-        app:layout_constraintTop_toBottomOf="@id/iv_icon_coupon" />
+        <TextView
+            android:id="@+id/tv_ticket_id"
+            style="@style/textStyleMedium_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="18dp"
+            android:text="Ticket ID: dfbc84a6-d6cf-4b83-aab1-8fcbd9807011"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:lines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_icon_coupon" />
+
+        <TextView
+            android:id="@+id/btn_show_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="18dp"
+            android:padding="5dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:gravity="center"
+            style="@style/textStyleSemIBold_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_ticket_id"
+            android:text="Show Full QR"
+            android:textSize="16sp"
+            android:backgroundTint="@color/black"
+            android:background="@drawable/custom_button_orange"
+            />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_icon_coupon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <ImageView
         android:id="@+id/iv_qr"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:src="@drawable/qr_example"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

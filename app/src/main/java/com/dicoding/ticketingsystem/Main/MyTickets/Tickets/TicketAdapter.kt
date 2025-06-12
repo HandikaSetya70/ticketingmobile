@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.ticketingsystem.DataSource.Response.TicketGroup
 import com.dicoding.ticketingsystem.R
 import com.dicoding.ticketingsystem.databinding.ItemTicketBinding
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.util.Currency
 import java.util.Locale
 import java.util.TimeZone
 
@@ -38,56 +40,115 @@ class TicketAdapter(
 
         fun bind(ticketGroup: TicketGroup) {
             val parentTicket = ticketGroup.parent
-            val event = parentTicket.events
+            val event = parentTicket.event
 
             // Set up category
-            binding.tvCategory.text = event?.category ?: "Unknown"
+            binding.tvCategory.text = event.category ?: "Unknown"
 
             // Set up status with conditional formatting
             binding.tvStatus.apply {
-                text = when (parentTicket.ticket_status) {
+                text = when (parentTicket.status) {
                     "valid" -> "Valid"
+                    "revoked" -> "Revoked"
+                    "used" -> "Used"
                     else -> "Pending"
                 }
 
-                if (parentTicket.ticket_status == "valid") {
-                    backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.green_accent)
-                    )
-                    setTextColor(ContextCompat.getColor(context, R.color.green))
-                } else {
-                    backgroundTintList = ColorStateList.valueOf(
-                        ContextCompat.getColor(context, R.color.red_accent)
-                    )
-                    setTextColor(ContextCompat.getColor(context, R.color.red))
+                when (parentTicket.status) {
+                    "valid" -> {
+                        backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.green_accent)
+                        )
+                        setTextColor(ContextCompat.getColor(context, R.color.green))
+                    }
+                    "used" -> {
+                        backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.blue_accent)
+                        )
+                        setTextColor(ContextCompat.getColor(context, R.color.blue))
+                    }
+                    "revoked" -> {
+                        backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.red_accent)
+                        )
+                        setTextColor(ContextCompat.getColor(context, R.color.red))
+                    }
+                    else -> {
+                        backgroundTintList = ColorStateList.valueOf(
+                            ContextCompat.getColor(context, R.color.orange_accent)
+                        )
+                        setTextColor(ContextCompat.getColor(context, R.color.orange))
+                    }
                 }
             }
 
             // Set event name
-            binding.tvTicketTitle.text = event?.event_name ?: "Unknown Event"
+            binding.tvTicketTitle.text = event.name
 
-            // Set quantity with formatting
-            binding.tvQuantity.text = "${ticketGroup.total_in_group} Person"
+            // Set quantity with better formatting
+            val quantityText = when (ticketGroup.total_in_group) {
+                1 -> "1 Person"
+                else -> "${ticketGroup.total_in_group} People"
+            }
+            binding.tvQuantity.text = quantityText
 
-            // Format and set the date
-            val dateText = if (event?.event_date != null) {
-                try {
-                    // Updated format pattern to match "2025-12-10T19:30:00+00:00"
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-                    dateFormat.timeZone = TimeZone.getTimeZone("UTC")
+            // Format and set the date with improved parsing
+            val dateText = formatEventDate(event.date)
+            binding.tvDate.text = dateText
 
-                    // Extract just the date part before trying to parse
-                    val datePart = event.event_date.split("T")[0] + "T" + event.event_date.split("T")[1].split("+")[0]
-                    val date = dateFormat.parse(datePart)
+            // Optional: Add price information if available
+            if (event.price > 0) {
+                val formattedPrice = formatCurrency(event.price)
+                binding.tvTicketTitle.text = "${event.name}"
+            }
 
+            // Optional: Add event status indicator
+            if (parentTicket.validity.is_upcoming) {
+                val daysLeft = parentTicket.validity.days_till_event
+                if (daysLeft != null && daysLeft <= 7) {
+                    // Show urgency for events within a week
+                    binding.tvDate.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.orange)
+                    )
+                }
+            } else {
+                // Past event
+                binding.tvDate.setTextColor(
+                    ContextCompat.getColor(binding.root.context, R.color.blue_accent)
+                )
+            }
+
+            // Set click listener
+            itemView.setOnClickListener {
+                onTicketClicked(ticketGroup)
+            }
+        }
+
+        private fun formatEventDate(dateString: String): String {
+            return try {
+                // Handle ISO 8601 format: "2025-12-10T19:30:00+00:00"
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                inputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+                // Extract the date part before the timezone
+                val cleanDateString = if (dateString.contains("+") || dateString.contains("Z")) {
+                    dateString.split("+")[0].split("Z")[0]
+                } else {
+                    dateString
+                }
+
+                val date = inputFormat.parse(cleanDateString)
+
+                if (date != null) {
                     val dayFormat = SimpleDateFormat("d", Locale.US)
-                    val day = dayFormat.format(date)
+                    val day = dayFormat.format(date).toInt()
 
-                    // Add ordinal suffix (1st, 2nd, 3rd, etc.)
+                    // Add ordinal suffix
                     val dayWithSuffix = when {
-                        day.endsWith("1") && day != "11" -> "${day}st"
-                        day.endsWith("2") && day != "12" -> "${day}nd"
-                        day.endsWith("3") && day != "13" -> "${day}rd"
+                        day in 11..13 -> "${day}th" // Special case for 11th, 12th, 13th
+                        day % 10 == 1 -> "${day}st"
+                        day % 10 == 2 -> "${day}nd"
+                        day % 10 == 3 -> "${day}rd"
                         else -> "${day}th"
                     }
 
@@ -97,19 +158,26 @@ class TicketAdapter(
                     val yearFormat = SimpleDateFormat("yyyy", Locale.US)
                     val year = yearFormat.format(date)
 
-                    "Event date: $dayWithSuffix of $month $year"
-                } catch (e: Exception) {
-                    Log.e("TicketAdapter", "Error parsing date: ${event.event_date}", e)
-                    "Event date: Unknown"
-                }
-            } else {
-                "Event date: Unknown"
-            }
-            binding.tvDate.text = dateText
+                    val timeFormat = SimpleDateFormat("HH:mm", Locale.US)
+                    val time = timeFormat.format(date)
 
-            // Set click listener
-            itemView.setOnClickListener {
-                onTicketClicked(ticketGroup)
+                    "Event date: $dayWithSuffix of $month $year at $time"
+                } else {
+                    "Event date: Invalid date format"
+                }
+            } catch (e: Exception) {
+                Log.e("TicketAdapter", "Error parsing date: $dateString", e)
+                "Event date: $dateString" // Fallback to original string
+            }
+        }
+
+        private fun formatCurrency(amount: Double): String {
+            return try {
+                val format = NumberFormat.getCurrencyInstance(Locale.US)
+                format.currency = Currency.getInstance("USD")
+                format.format(amount)
+            } catch (e: Exception) {
+                "$${String.format("%.2f", amount)}"
             }
         }
     }

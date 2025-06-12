@@ -15,15 +15,6 @@
         android:theme="@style/Theme.TicketingSystem"
         tools:targetApi="31">
         <activity
-            android:name=".Main.Events.EventDetails.BuyTicket.PaymentReturnActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Main.Events.EventDetails.BuyTicket.BuyTicketActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MyWallets.WalletsActivity"
-            android:exported="false" />
-        <activity
             android:name=".Main.Profile.ProfileDetails.ProfileDetailsActivity"
             android:exported="false" />
         <activity
@@ -50,6 +41,37 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".Main.Events.EventDetails.BuyTicket.PaymentReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.TicketingSystem">
+
+            <!-- Intent filter for PayPal success return -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="ticketapp"
+                    android:host="payment-success" />
+            </intent-filter>
+
+            <!-- Intent filter for PayPal cancel return -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.browsable" />
+                <data android:scheme="ticketapp"
+                    android:host="payment-cancel" />
+            </intent-filter>
+        </activity>
+
+        <!-- BuyTicketActivity -->
+        <activity
+            android:name=".Main.Events.EventDetails.BuyTicket.BuyTicketActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.TicketingSystem" />
     </application>
 
 </manifest>

@@ -133,7 +133,7 @@ class EventDetailsActivity : AppCompatActivity() {
                     // You could change tint to gray here
                 }
                 event.price > 0 -> {
-                    btnBuy.text = "Buy Tickets @$${event.price}"
+                    btnBuy.text = "Buy Tickets"
                     btnBuy.isEnabled = true
                     btnBuy.setBackgroundResource(R.drawable.background_item)
                     // Keep original orange color
