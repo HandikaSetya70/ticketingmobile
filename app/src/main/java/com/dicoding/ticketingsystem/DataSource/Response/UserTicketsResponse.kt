@@ -205,6 +205,7 @@ data class PurchaseData(
     val summary: PurchaseSummary,
     val payment: PaymentData,
     val reservation: ReservationData,
+    val tickets_preview: TicketsPreview, // NEW: Preview of tickets with bound names
     val next_steps: List<String>? = null
 )
 
@@ -216,9 +217,23 @@ data class PurchaseSummary(
     val quantity: Int,
     val unit_price: Double,
     val total_amount: Double,
+    val bound_names: List<BoundNameSummary>, // NEW: Preview of tickets with bound names
     val currency: String
 )
+data class BoundNameSummary(
+    val ticket_number: Int,
+    val bound_name: String
+)
 
+data class TicketsPreview(
+    val tickets: List<TicketPreview>
+)
+
+data class TicketPreview(
+    val ticket_number: Int,
+    val bound_name: String,
+    val ticket_title: String
+)
 data class PaymentData(
     val paypal_order_id: String,
     val checkout_url: String,
@@ -312,6 +327,7 @@ data class Payment(
 data class PurchaseRequest(
     val event_id: String,
     val quantity: Int,
+    val bound_names: List<String>, // NEW: Array of bound names for each ticket
     val device_info: DeviceInfo? = null
 )
 

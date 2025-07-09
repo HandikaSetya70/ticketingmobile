@@ -275,6 +275,55 @@
 
             </LinearLayout>
 
+            <!-- NEW: Bound Names Section -->
+            <LinearLayout
+                android:id="@+id/bound_names_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/textStyleSemIBold_16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Ticket Holder Names"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    style="@style/textStyleMedium_14"
+                    android:padding="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:background="@drawable/custom_button_orange"
+                    android:backgroundTint="@color/red"
+                    android:text="Enter the name for each ticket holder. This will be used for VERIFICATION at the event."
+                    android:textColor="@color/white" />
+
+                <!-- Dynamic container for name input fields -->
+                <LinearLayout
+                    android:id="@+id/container_bound_names"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Name input fields will be added dynamically here -->
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_bound_names_hint"
+                    style="@style/textStyleMedium_12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="💡 Use full names or initials (e.g., 'John Doe' or 'J.D.')"
+                    android:textColor="@color/dark_grey" />
+
+            </LinearLayout>
+
             <!-- Price Breakdown -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
